@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tạo Danh Sách QR Thanh Toán VietQR</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f7f7f7; }
+    h1 { color: #333; }
+    .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    pre { background: #f0f0f0; padding: 10px; border-radius: 8px; }
+    .qr-container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .qr-item { background: #fff; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 220px; }
+    .qr-item img { border-radius: 8px; width: 180px; height: 180px; margin-bottom: 10px; }
+    .info { font-size: 14px; color: #333; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Tạo Danh Sách QR Thanh Toán (VietQR)</h1>
+    <p>Tải file <code>data.json</code> theo định dạng sau:</p>
+    <pre>[
+  {
+    "soHopDong": "HD001",
+    "soTien": 1000000,
+    "soTaiKhoan": "0123456789",
+    "tenNganHang": "Vietcombank",
+    "binId": "970436",
+    "tenTaiKhoan": "NGUYEN VAN A",
+    "noiDung": "Thanh toan HD001"
+  }
+]</pre>
+    <input type="file" id="fileInput" accept="application/json" />
+  </div>
+
+  <div id="output" class="qr-container"></div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const data = JSON.parse(e.target.result);
+          generateQRs(data);
+        } catch (err) {
+          alert('❌ File JSON không hợp lệ!');
+          console.error(err);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    function generateQRs(dataList) {
+      const container = document.getElementById('output');
+      container.innerHTML = '';
+
+      dataList.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'qr-item';
+
+        const img = document.createElement('img');
+        img.src = createVietQRData(item);
+        img.alt = 'QR Code';
+
+        const info = document.createElement('div');
+        info.className = 'info';
+        info.innerHTML = `
+          <strong>${item.soHopDong}</strong><br>
+          ${item.tenTaiKhoan}<br>
+          ${item.tenNganHang}<br>
+          ${item.soTien.toLocaleString()} VND<br>
+          <small>${item.noiDung}</small>
+        `;
+
+        div.appendChild(img);
+        div.appendChild(info);
+        container.appendChild(div);
+      });
+    }
+
+    function createVietQRData(item) {
+      const bankBin = item.binId;
+      const accountNo = item.soTaiKhoan;
+      const amount = item.soTien;
+      const addInfo = encodeURIComponent(item.noiDung || "");
+      const accountName = encodeURIComponent(item.tenTaiKhoan || "");
+      // Chuẩn VietQR NAPAS (có thể quét bằng app ngân hàng)
+      return `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact2.jpg?amount=${amount}&addInfo=${addInfo}&accountName=${accountName}`;
+    }
+  </script>
+</body>
+</html>
