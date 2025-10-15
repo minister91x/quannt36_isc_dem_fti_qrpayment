@@ -14,11 +14,84 @@
     .qr-item { background: #fff; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 220px; }
     .qr-item img { border-radius: 8px; width: 180px; height: 180px; margin-bottom: 10px; }
     .info { font-size: 14px; color: #333; }
+  /* Header styles */
+  .site-header { width:100%; background: linear-gradient(180deg,#ffffff,#f8fafc); box-shadow: 0 6px 18px rgba(15,23,36,0.06); padding: 10px 0; }
+  .header-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 16px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand-logo { width:56px; height:56px; background:linear-gradient(135deg,#2563eb,#7c3aed); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:20px; box-shadow: 0 6px 16px rgba(37,99,235,0.18); }
+  .brand-title { font-size:18px; font-weight:700; color:#0f1724; margin-bottom:2px; }
+  .brand-sub { font-size:12px; color:#64748b; }
+  .nav { display:flex; gap:12px; align-items:center; }
+  .btn { background:#2563eb; color:#fff; border:none; padding:8px 14px; border-radius:10px; cursor:pointer; font-size:14px; box-shadow: 0 4px 10px rgba(37,99,235,0.12); }
+  .btn.secondary { background:transparent; color:#0f1724; border:1px solid #e2e8f0; }
+  .nav a, .nav button { text-decoration:none; }
+  @media (max-width:900px){ .header-inner{ flex-direction:column; align-items:flex-start; gap:12px } .nav{ width:100%; justify-content:flex-start } }
+
+    /* Guide card smaller font */
+    .guide-card { font-size: 13px; }
+    .guide-card h1 { font-size: 18px; }
+    .guide-card h2 { font-size: 16px; }
+    .guide-card ol li { margin-bottom: 8px; }
+
+  /* Footer styles */
+  footer.site-footer { background: #0f1724; color: #cbd5e1; padding: 28px 20px; border-radius: 8px; margin-top: 28px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+    .footer-col { flex: 1 1 220px; min-width: 180px; }
+    .footer-col h4 { color: #fff; margin-bottom: 10px; font-size: 16px; }
+    .footer-col p, .footer-col a, .footer-col li { color: #cbd5e1; font-size: 14px; line-height: 1.6; text-decoration: none; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { text-align: center; margin-top: 18px; color: #94a3b8; font-size: 13px; }
+    @media (max-width:600px){ .footer-inner { flex-direction: column; text-align: center; } .footer-col { min-width: auto; } }
   </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-logo">QR</div>
+        <div>
+          <div class="brand-title">PaymentQR Batch Creator</div>
+          <div class="brand-sub">Tạo Danh Sách QR Thanh Toán (VietQR)</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="btn" id="downloadTemplate">Tải mẫu Excel</button>
+        <a class="btn secondary" href="https://products.aspose.app/cells/conversion/excel-to-json" target="_blank">Excel → JSON</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="card guide-card">
+    <h1></h1>
+    <h2>Hướng dẫn nhanh</h2>
+    <ol>
+      <li>
+        <strong>Bước 1:</strong> Điền file theo template Excel.
+        <br />
+        - Các cột cần có: <code>soHopDong</code>, <code>soTien</code>, <code>soTaiKhoan</code>, <code>tenNganHang</code>, <code>binId</code>, <code>tenTaiKhoan</code>, <code>noiDung</code>.
+        <br />
+        - Mỗi hàng tương ứng một QR (một giao dịch). Lưu file dưới dạng <code>.xlsx</code>.
+      </li>
+      <li>
+        <strong>Bước 2:</strong> Chuyển dữ liệu Excel sang JSON.
+        <br />
+        - Mở: <a href="https://products.aspose.app/cells/conversion/excel-to-json" target="_blank">https://products.aspose.app/cells/conversion/excel-to-json</a>
+        <br />
+        - Chọn file Excel (Choose file) -> Click "Convert" -> Tải xuống hoặc copy nội dung JSON được tạo (gợi ý lưu tên <code>data.json</code>).
+      </li>
+      <li>
+        <strong>Bước 3:</strong> Tạo QR hàng loạt trên trang này.
+        <br />
+        - Quay lại trang này và tải file JSON đã tạo ở Bước 2 bằng ô "Choose file" phía trên.
+        <br />
+        - Sau khi tải, trang sẽ hiển thị QR cho từng dòng. Bạn có thể lưu ảnh QR từng cái (Right click -> Save image as...) hoặc mở ảnh để in/ghép.
+      </li>
+    </ol>
+    <p><strong>Lưu ý:</strong> Đảm bảo các trường <code>soTien</code> là số (không có dấu phân cách) và <code>binId</code> là mã BIN ngân hàng nếu có. Nếu xảy ra lỗi JSON không hợp lệ, kiểm tra lại định dạng Excel và thử chuyển lại.</p>
+  </div>
   <div class="card">
-    <h1>Tạo Danh Sách QR Thanh Toán (VietQR)</h1>
+   
     <p>Tải file <code>data.json</code> theo định dạng sau:</p>
     <pre>[
   {
@@ -33,6 +106,8 @@
 ]</pre>
     <input type="file" id="fileInput" accept="application/json" />
   </div>
+
+  
 
   <div id="output" class="qr-container"></div>
 
@@ -92,5 +167,48 @@
       return `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact2.jpg?amount=${amount}&addInfo=${addInfo}&accountName=${accountName}`;
     }
   </script>
+  <script>
+    // Tạo và tải mẫu CSV (có thể mở bằng Excel)
+    function downloadCSV(filename, rows) {
+      const csvContent = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('downloadTemplate').addEventListener('click', function(){
+      const headers = ['soHopDong','soTien','soTaiKhoan','tenNganHang','binId','tenTaiKhoan','noiDung'];
+      const sample = ['HD001', '1000000', '0123456789', 'Vietcombank', '970436', 'NGUYEN VAN A', 'Thanh toan HD001'];
+      downloadCSV('template.csv', [headers, sample]);
+    });
+  </script>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Về công cụ</h4>
+        <p>Trình tạo QR hàng loạt cho thanh toán VietQR. Chuyển Excel → JSON rồi tải lên để tạo QR nhanh.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Thông tin tác giả</h4>
+        <p><strong>Quannt36</strong></p>
+      </div>
+      <div class="footer-col">
+        <h4>Liên kết nhanh</h4>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li><a href="https://products.aspose.app/cells/conversion/excel-to-json" target="_blank">Excel → JSON (Aspose)</a></li>
+          <li><a href="#output">Xem QR đã tạo</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> Quannt36 — All rights reserved.</div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
